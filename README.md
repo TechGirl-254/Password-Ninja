@@ -27,10 +27,10 @@ Also, the encryption and hacking techniques used are worth it.
 - CSS
 - ReactJs
 - NextJs
-- NodeJs
-- FastifyJs
+- NodeJS
 - CryptoJs
 - MongoDB
+  ![alt text](image.png)
 
 ## Who coded this piece of genius?
 
