@@ -26,6 +26,10 @@ function Vault({
 
   const mutation = useMutation(saveVault);
 
+  // function handlePageSwitching() {
+  //   setStep("register");
+  // }
+
   return (
     <FormWrapper
       onSubmit={handleSubmit(({ vault }) => {
@@ -102,13 +106,18 @@ function Vault({
       })}
 
       <Button
+        ml="8"
+        bgColor="purple"
         onClick={() => append({ website: "", username: "", password: "" })}
       >
         Add
       </Button>
 
-      <Button ml="8" color="teal" type="submit">
+      <Button ml="8" bgColor="purple" type="submit">
         Save vault
+      </Button>
+      <Button ml="8" bgColor="purple" type="reset">
+        Log Out
       </Button>
     </FormWrapper>
   );

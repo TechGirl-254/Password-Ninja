@@ -24,7 +24,7 @@ function createServer() {
   const app = fastify();
 
   app.register(cors, {
-    origin: CORS_ORIGIN,
+    origin: "http://localhost:3000",
     credentials: true,
   });
 
@@ -62,7 +62,7 @@ function createServer() {
       }
     }
   );
-  // app.get("/", rootHandler);
+
   app.register(userRoutes, { prefix: "api/users" });
   app.register(vaultRoutes, { prefix: "api/vault" });
 

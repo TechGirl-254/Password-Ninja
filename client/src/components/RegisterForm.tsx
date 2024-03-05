@@ -1,5 +1,7 @@
 import {
+  Box,
   Button,
+  Flex,
   FormControl,
   FormErrorMessage,
   FormLabel,
@@ -16,7 +18,7 @@ import { VaultItem } from "../pages";
 import FormWrapper from "./FormWrapper";
 import { Link as RouterLink } from "react-router-dom";
 
-function RegisterForm({
+export function RegisterForm({
   setVaultKey,
   setStep,
 }: {
@@ -52,68 +54,95 @@ function RegisterForm({
       setStep("login");
     },
   });
+  function handlePageSwitching() {
+    setStep("login");
+  }
 
   return (
-    <FormWrapper
-      onSubmit={handleSubmit(() => {
-        const password = getValues("password");
-        const email = getValues("email");
+    <Flex width="full" align="center" justifyContent="center">
+      <Box
+        p={8}
+        maxWidth="500px"
+        borderWidth={1}
+        borderRadius={8}
+        boxShadow="lg"
+      >
+        <Box textAlign="center">
+          <Heading>Register</Heading>
+        </Box>
+        <Box my={4} textAlign="left">
+          <form
+            onSubmit={handleSubmit(() => {
+              const password = getValues("password");
+              const email = getValues("email");
 
-        const hashedPassword = hashPassword(password);
+              const hashedPassword = hashPassword(password);
 
-        setValue("hashedPassword", hashedPassword);
+              setValue("hashedPassword", hashedPassword);
 
-        mutation.mutate({
-          email,
-          hashedPassword,
-        });
-      })}
-    >
-      <Heading>Register</Heading>
+              mutation.mutate({
+                email,
+                hashedPassword,
+              });
+            })}
+          >
+            <FormControl isRequired>
+              <FormLabel htmlFor="email">Email</FormLabel>
+              <Input
+                id="email"
+                placeholder="Email"
+                {...register("email", {
+                  required: "Email is required",
+                  minLength: {
+                    value: 4,
+                    message: "Email must be 4 characters long",
+                  },
+                })}
+              />
 
-      <FormControl mt="4">
-        <FormLabel htmlFor="email">Email</FormLabel>
-        <Input
-          id="email"
-          placeholder="Email"
-          {...register("email", {
-            required: "Email is required",
-            minLength: { value: 4, message: "Email must be 4 characters long" },
-          })}
-        />
+              <FormErrorMessage>
+                {errors.email && errors.email.message}
+              </FormErrorMessage>
+            </FormControl>
+            <FormControl isRequired mt={6}>
+              <FormLabel htmlFor="password">Password</FormLabel>
+              <Input
+                id="password"
+                placeholder="Password"
+                type="password"
+                {...register("password", {
+                  required: "Password is required",
+                  minLength: {
+                    value: 6,
+                    message: "Password must be 6 characters long",
+                  },
+                })}
+              />
 
-        <FormErrorMessage>
-          {errors.email && errors.email.message}
-        </FormErrorMessage>
-      </FormControl>
-      <FormControl mt="4">
-        <FormLabel htmlFor="password">Password</FormLabel>
-        <Input
-          id="password"
-          placeholder="Password"
-          type="password"
-          {...register("password", {
-            required: "Password is required",
-            minLength: {
-              value: 6,
-              message: "Password must be 6 characters long",
-            },
-          })}
-        />
+              <FormErrorMessage>
+                {errors.email && errors.email.message}
+              </FormErrorMessage>
+            </FormControl>
 
-        <FormErrorMessage>
-          {errors.email && errors.email.message}
-        </FormErrorMessage>
-      </FormControl>
-
-      <div className="mt-60 mb-40 p-2">
-        <Button type="submit">Register</Button>
-      </div>
-
-      <div className="mt-60 p-2 items-center">
-        <a href="/login">Already registered? Click here to login</a>
-      </div>
-    </FormWrapper>
+            <Button
+              type="submit"
+              bgColor="purple"
+              variant="outline"
+              width="full"
+              mt={4}
+            >
+              Register
+            </Button>
+            <Link
+              onClick={() => handlePageSwitching()}
+              className="mt-60 p-2 items-center bg-white"
+            >
+              Already registered? Click here to login.
+            </Link>
+          </form>
+        </Box>
+      </Box>
+    </Flex>
   );
 }
 
