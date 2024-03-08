@@ -1,17 +1,29 @@
-import { Box, FormControl, FormLabel, Input, Button } from "@chakra-ui/react";
+import {
+  Box,
+  FormControl,
+  FormLabel,
+  Input,
+  Button,
+  Link,
+} from "@chakra-ui/react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { useMutation } from "react-query";
 import { saveVault } from "../api";
 import { encryptVault } from "../crypto";
 import { VaultItem } from "../pages";
 import FormWrapper from "./FormWrapper";
+import { Dispatch, SetStateAction } from "react";
 
 function Vault({
   vault = [],
   vaultKey = "",
+  setStep,
 }: {
   vault: VaultItem[];
   vaultKey: string;
+  setStep: Dispatch<
+    SetStateAction<"register" | "login" | "vault" | "decryption">
+  >;
 }) {
   const { control, register, handleSubmit } = useForm({
     defaultValues: {
@@ -24,11 +36,13 @@ function Vault({
     name: "vault",
   });
 
-  const mutation = useMutation(saveVault);
+  const mutation = useMutation(saveVault, {
+    onSuccess: () => setStep("decryption"),
+  });
 
-  // function handlePageSwitching() {
-  //   setStep("register");
-  // }
+  function handlePageSwitching() {
+    setStep("decryption");
+  }
 
   return (
     <FormWrapper
@@ -59,7 +73,7 @@ function Vault({
             <FormControl>
               <FormLabel htmlFor="website">Website</FormLabel>
               <Input
-                type="url"
+                type="password"
                 id="website"
                 placeholder="Website"
                 {...register(`vault.${index}.website`, {
@@ -67,10 +81,10 @@ function Vault({
                 })}
               />
             </FormControl>
-
             <FormControl ml="2">
               <FormLabel htmlFor="username">Username</FormLabel>
               <Input
+                type="password"
                 id="username"
                 placeholder="Username"
                 {...register(`vault.${index}.username`, {
@@ -78,7 +92,6 @@ function Vault({
                 })}
               />
             </FormControl>
-
             <FormControl ml="2">
               <FormLabel htmlFor="password">Password</FormLabel>
               <Input
@@ -90,7 +103,6 @@ function Vault({
                 })}
               />
             </FormControl>
-
             <Button
               type="button"
               bg="red.500"
@@ -104,21 +116,30 @@ function Vault({
           </Box>
         );
       })}
+      <div>
+        <Button
+          ml="2"
+          bgColor="purple"
+          onClick={() => append({ website: "", username: "", password: "" })}
+        >
+          Add
+        </Button>
 
-      <Button
-        ml="8"
-        bgColor="purple"
-        onClick={() => append({ website: "", username: "", password: "" })}
+        <Button ml="2" bgColor="purple" type="submit">
+          Save vault
+        </Button>
+        <Button ml="2" bgColor="purple" type="reset">
+          Log Out
+        </Button>
+      </div>
+
+      <Link
+        ml="2"
+        onClick={() => handlePageSwitching()}
+        className="mt-60 p-2 items-center bg-white"
       >
-        Add
-      </Button>
-
-      <Button ml="8" bgColor="purple" type="submit">
-        Save vault
-      </Button>
-      <Button ml="8" bgColor="purple" type="reset">
-        Log Out
-      </Button>
+        Already registered? Click here to login.
+      </Link>
     </FormWrapper>
   );
 }

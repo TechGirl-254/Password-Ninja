@@ -6,6 +6,7 @@ import LoginForm from "../components/LoginForm";
 import RegisterForm from "../components/RegisterForm";
 import Vault from "../components/Vault";
 import styles from "../styles/Home.module.css";
+import DecryptedVault from "@/components/DecryptedVault";
 
 export interface VaultItem {
   website: string;
@@ -14,7 +15,9 @@ export interface VaultItem {
 }
 
 const Home: NextPage = () => {
-  const [step, setStep] = useState<"register" | "login" | "vault">("login");
+  const [step, setStep] = useState<
+    "register" | "login" | "vault" | "decryption"
+  >("login");
   const [vault, setVault] = useState<VaultItem[]>([]);
   const [vaultKey, setVaultKey] = useState("");
 
@@ -51,7 +54,12 @@ const Home: NextPage = () => {
             setVaultKey={setVaultKey}
           />
         )}
-        {step === "vault" && <Vault vault={vault} vaultKey={vaultKey} />}
+        {step === "vault" && (
+          <Vault vault={vault} vaultKey={vaultKey} setStep={setStep} />
+        )}
+        {step === "decryption" && (
+          <DecryptedVault vault={vault} vaultKey={vaultKey} setStep={setStep} />
+        )}
       </main>
     </div>
   );

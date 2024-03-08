@@ -23,7 +23,9 @@ export function RegisterForm({
   setStep,
 }: {
   setVaultKey: Dispatch<SetStateAction<string>>;
-  setStep: Dispatch<SetStateAction<"register" | "login" | "vault">>;
+  setStep: Dispatch<
+    SetStateAction<"register" | "login" | "vault" | "decryption">
+  >;
 }) {
   const {
     handleSubmit,

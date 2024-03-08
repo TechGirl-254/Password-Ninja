@@ -23,3 +23,5 @@ export const UserModel = getModelForClass(User, {
     timestamps: true,
   },
 });
+
+
